@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Purse</title>
+</head>
+<body>
+    <div>Welcome <%=session[:user_id]%></div>
+    <% budget = Budget.where(user_id: session[:user_id]).first %>
+    <% if budget %>
+      <% budget_value = []%>
+      <% budget_value[0] = budget.est_budget%>
+      <% budget_value[1] = budget.currency%>
+      <div class="display-budget">
+        <div class="budget-header">
+          <div class="text">Budget for <%=budget.fiscal_year%></div>
+          <div class="progress">
+            <canvas class="canvas" width="150" height="150" data-budget=<%budget_value%>>
+            </canvas>
+          </div>
+        </div>
+      </div>
+    <% else %>
+      <form action="/save_budget" method="post">
+        <div class="create-budget input ui" >
+          <input type="text" name="budget" placeholder="Enter annual budget">
+          <input type="text" name="year" placeholder="Enter year">
+          <button>Add</button>
+        </div>
+      </form>
+      
+    <% end %>  
+
+    
+
+    <!-- Add Boardgame -->
+    <div class="add-container">
+      <div class="row">
+        <div>img</div>
+        <div>name</div>
+        <div>value</div>
+        <div>add</div>
+        <div>remove</div>
+      </div>
+    </div>
+
+    <div class="list-container">
+      
+      <% if @is_bg_maintained %>
+        <% @bg_list.each do |bg| %>
+          <div class="bg-row">
+            <form action="/remove_game" method="post"></form>
+            <%=bg['bg_name']%>
+            <%=bg['currency']%>
+            <%=bg['price']%>
+            <button>x</button>
+          </div>
+        <% end %>
+      <% else %>
+        <!-- <div class="bg-row">
+          <form action="/add_game" method="post"></form>
+          <input type="text" name="new_bg" placeholder="Enter new game">
+          <input type="text" name="new_price" placeholder="Enter price">
+          <button>+</button>
+        </div> -->
+      <% end %>
+    </div>
+    <script>
+      var ctx = document.querySelector('.canvas').getContext('2d');
+      var budget = document.querySelector('.canvas').dataset.budget;
+      var al = 0;
+      var start = 4.72;
+      var cw = ctx.canvas.width;
+      var ch = ctx.canvas.height; 
+      var diff;
+      
+      function progressSim(){
+       
+        diff = ((al / 100) * Math.PI*2*10).toFixed(2);
+        ctx.clearRect(0, 0, cw, ch);
+        ctx.lineWidth = 10;
+        ctx.fillStyle = '#09F';
+        ctx.strokeStyle = "#09F";
+        ctx.textAlign = 'center';
+        debugger;
+        ctx.fillText(budget[0]+' '+budget[1], cw*.5, ch*.5+2, cw);
+        ctx.beginPath();
+        ctx.arc(35, 35, 30, start, diff/10+start, false);
+        ctx.stroke();
+        if(al >= 80){
+          clearTimeout(sim);
+            // Add scripting here that will run when progress completes
+        }
+        al++;
+      }
+      var sim = setInterval(progressSim, 50);
+      
+    </script>
+</body>
+</html>

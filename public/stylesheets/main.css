@@ -1,0 +1,7 @@
+body {
+  background: url('/background.jpg');
+}
+
+.container {
+  margin: 1em;
+}

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Search</title>
+  <link rel="stylesheet" type="text/css" href="/stylesheets/add.css">
+
+</head>
+
+<body>
+  <!-- Search Bar -->
+
+  <div>
+    <form action="/add" method="get">
+      <div class="search-container ui action input left icon">
+        <i class="search icon"></i>
+        <input type="text" name="game_name" placeholder="Enter game">
+        <button class="ui button">Search</button>
+      </div>
+    </form>
+  </div>
+
+
+  <!-- Results slide -->
+   <form>
+  <% if !@boardgames.empty?%>
+    <div class="ui special cards" style="margin-top: 1em">
+      <% @boardgames.each do |boardgame| %>
+        <div class="card">
+          <div class="blurring dimmable image" style="background: black">
+            <div class="ui dimmer">
+              <div class="content">
+                <div class="center">
+                  <button formaction="/add/<%=boardgame[:name]%>" formmethod="post" type="submit" class="ui inverted button">Add Game</button>
+                </div>
+              </div>
+            </div>
+            <img style="height: 300px; object-fit: contain;" src=<%=boardgame[:thumbnail]%>>
+          </div>
+          <div class="content">
+            <a class="header">
+              <%=boardgame[:name]%>
+            </a>
+            <div class="meta">
+              <span class="date">
+                <%=boardgame[:year]%>
+              </span>
+            </div>
+          </div>
+          <div class="extra content">
+            <a>
+              <i class="users icon"></i>
+              2-4 Players
+            </a>
+          </div>
+        </div>
+        <% end %>
+    </div>
+    <% end %>
+    </form>
+
+      <script>
+        $('.special.cards .image').dimmer({
+          on: 'hover'
+        });
+      </script>
+</body>
+
+</html>

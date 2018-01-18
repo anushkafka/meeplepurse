@@ -1,0 +1,46 @@
+/* .search-container {
+  margin: 1em;
+  display: flex;
+}
+
+.search-container input {
+  border: none;
+  border-bottom: 1px solid black;
+  outline: none;
+  height: 40px;
+  color: rgb(65, 63, 63);
+  background: transparent;
+  font-size: 16px;
+}
+
+.search-container button {
+  width: 70px;
+  border: 2px solid rgb(242, 175, 58);
+  height: 40px;
+  font-size: 16px;
+  border-radius: 5px;
+  background: transparent;
+  color: rgb(242, 175, 58);
+}
+
+.results-container {
+  position: relative;
+  top: 150px;
+  align-content: center;
+}
+
+.card-container {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  top: 150px;
+}
+
+.card {
+  border: 2px solid rgb(242, 175, 58);
+}
+
+.game-card .image {
+  width: 200px;
+  height: 200px;
+} */

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign up</title>
+    <link rel = "stylesheet" type = "text/css" href = "/stylesheets/signup.css" >
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+</head>
+  <body>
+    <div class="signup-container">
+      <div class="glass">
+        <form action="/signup" method="post">
+          <div class="input-field">
+            <span><i class="fa fa-user" aria-hidden="true"></i></span>
+            <input type="text" name="usrname" placeholder="Username">
+          </div>
+          <div class="input-field">
+            <span><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
+            <input type="password" name="pwd" placeholder="Password">
+          </div>
+          <div class="input-field">
+            <i class="fa fa-envelope" aria-hidden="true"></i>
+            <input type="text" name="email" placeholder="Email">
+          </div>
+          <div class="input-field">
+            <select name="currency">
+              <option value="aud">AUD</option>
+              <option value="usd">USD</option>
+              <option value="lkr">LKR</option>
+              <option value="eur">EUR</option>
+            </select>
+          </div>
+          <div class="input-field">
+            <button>Sign up</button>
+          </div>
+        </form>
+      </div>
+  </body>
+</html>
