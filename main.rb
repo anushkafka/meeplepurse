@@ -109,7 +109,7 @@ get '/add' do
   @boardgames = []
   if params[:game_name]
     game_name = params[:game_name].downcase
-    url = "http://localhost:3000/?game=#{game_name}"
+    url = "https://bgapi.herokuapp.com/?game=#{game_name}"
     result = HTTParty.get(url)
     result.parsed_response["results"].each do |boardgame|
       boardgame = {
