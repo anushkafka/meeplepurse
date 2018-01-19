@@ -1,7 +1,5 @@
 # settings for active records
 require 'active_record'
-require_relative 'models/purchase'
-require_relative 'models/user'
 
 options = {
   adapter: 'postgresql',
