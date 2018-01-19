@@ -1,7 +1,6 @@
 require 'sinatra'
 # require 'sinatra/reloader'
 require 'pry'
-require 'pg'
 require 'httparty'
 require_relative 'db_config'
 require_relative 'models/user'
