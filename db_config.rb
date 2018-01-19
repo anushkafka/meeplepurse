@@ -1,5 +1,3 @@
-require 'pg'
-
 # settings for active records
 require 'active_record'
 require_relative 'models/purchase'
