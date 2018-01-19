@@ -1,12 +1,11 @@
 require 'sinatra'
-require 'sinatra/reloader'
+# require 'sinatra/reloader'
 require 'pry'
 require 'pg'
 require 'httparty'
 require_relative 'db_config'
 require_relative 'models/user'
-require_relative 'models/boardgame'
-require_relative 'models/budget'
+require_relative 'models/purchase'
 require 'uri'
 
 enable :sessions
@@ -25,34 +24,13 @@ post '/signin' do
   end
 end
 
-get '/purse' do
-  # validate budget header
-  @budget = Budget.where(user_id: session[:user_id])
-
-  # -----------------------
-  @bg_list
-  @is_bg_maintained = false
-  # validate game list
-  # usr = User.find(session[:user_id])
-  # @bg_list = Boardgame.where(user_id: usr.id)
- 
-  # if @bg_list.nil?
-  #   @is_bg_maintained = false
-  # else
-  #   @is_bg_maintained = true
-  # end
-  # -----------------
-  
-  erb :purse
-end
-
 get '/signup' do
   erb :signup
 end
 
 post '/signup' do
   usr = User.new
-  binding.pry
+  # binding.pry
   usr.usrname = params[:usrname]
   usr.password = params[:pwd]
   usr.email = params[:email]
@@ -65,38 +43,68 @@ post '/signup' do
   
 end
 
-post '/save_budget' do
+get '/purse' do
+  # validate if budget is maintained
   usr = User.find(session[:user_id])
-  budget = Budget.new
-  budget.user_id = usr.id
-  budget.fiscal_year = params[:year]
-  budget.est_budget = params[:budget]
-  budget.currency = usr.currency
-  # session[:budget_id] = 
-  if budget.save
-    session[:budget_id] = budget.id
+  usr.est_budget
+ 
+  erb :purse
+end
+
+put '/purse' do
+  usr = User.find(session[:user_id])
+  usr.est_budget = params[:budget]
+  if usr.save
     redirect '/purse'
-    # redirect "/purse?est_budget=#{params[:budget]}"
   else
-    return 'Error!'
+    return "Error!"
   end
 end
 
-post '/update_budget' do
-  act_budget = act_budget - params[:new_price]
-  # sql = 'UPDATE budget SET act_budget = 'Adam B.', birth_year = 1986 WHERE name = 'Adam Bray';'
-  redirect '/purse'
+# Talk to dt about changing this to PUT and DELETE!!
+post '/purse/:action' do
+  purchase_id = params[:action].split(',')[1]
+  purchase = Purchase.find(purchase_id)
+
+  if params[:action].split(',')[0] == 'confirm'
+    purchase.is_confirmed = true
+    purchase.price = params[:purchase_price]
+    
+    if purchase.save
+      redirect '/purse'
+    else
+      return 'Error!'
+    end
+  else
+    if purchase.destroy
+      redirect '/purse'
+    else
+      return 'Error!'
+    end
+  end
+
 end
 
-post '/add_game' do
-  sql = "INSERT INTO boardgames (user_id,budget_id,bg_name,currency,price) 
-  values (#{user_id},#{budget_id},#{params[:new_bg]},#{params[:new_curr]},#{params[:new_price]});"
+# post '/save_budget' do
+#   usr = User.find(session[:user_id])
+#   budget = Budget.new
+#   budget.user_id = usr.id
+#   budget.fiscal_year = params[:year]
+#   budget.est_budget = params[:budget]
+#   budget.currency = usr.currency
+#   # session[:budget_id] = 
+#   if budget.save
+#     session[:budget_id] = budget.id
+#     redirect '/purse'
+#     # redirect "/purse?est_budget=#{params[:budget]}"
+#   else
+#     return 'Error!'
+#   end
+# end
 
-  conn = PG.connect(dbname: 'meeplepurse')
-  res = conn.exec(sql)
-  conn.close
-  redirect '/update_budget'
-end
+
+
+
 
 get '/add' do
   @boardgames = []
@@ -106,6 +114,7 @@ get '/add' do
     result = HTTParty.get(url)
     result.parsed_response["results"].each do |boardgame|
       boardgame = {
+        :id => boardgame["bgg-id"],
         :name => boardgame["primary-name"],
         :thumbnail => boardgame["image"].first,
         :year => boardgame["year-published"],
@@ -117,6 +126,18 @@ get '/add' do
   end
 
   erb :add
+end
+
+post '/add/:id' do
+  purchase = Purchase.new
+  purchase.user_id = session[:user_id]
+  purchase.boardgame_id = params[:id].split(',')[0]
+  purchase.boardgame_title = params[:id].split(',')[1]
+  if purchase.save
+    redirect "/purse?id=#{purchase.id}"
+  else
+    return 'Error!'
+  end
 end
 
 get '/add_1' do
@@ -146,10 +167,3 @@ get '/add_1' do
   erb :add
 end
 
-get '/test' do
-  erb :test
-end
-
-put '/user/:id' do
-  
-end

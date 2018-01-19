@@ -32,7 +32,9 @@
             <div class="ui dimmer">
               <div class="content">
                 <div class="center">
-                  <button formaction="/add/<%=boardgame[:name]%>" formmethod="post" type="submit" class="ui inverted button">Add Game</button>
+                  <%route=""%>
+                  <%route = "/add/"+boardgame[:id].to_s+","+boardgame[:name].split(' ').join('+')%>
+                  <button formaction=<%=route%> formmethod="post" type="submit" class="ui inverted button">Add Game</button>
                 </div>
               </div>
             </div>

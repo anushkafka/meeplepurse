@@ -14,9 +14,11 @@ CREATE TABLE users
 CREATE TABLE purchases(
   id SERIAL PRIMARY KEY,
   user_id INTEGER REFERENCES users (id) ON DELETE RESTRICT,
-  boardgame_id VARCHAR(50),
+  boardgame_id VARCHAR(50) unique, 
   boardgame_title VARCHAR(300),
-  price NUMERIC CHECK(price > 0)
+  img_url VARCHAR(300),
+  price NUMERIC CHECK(price > 0),
+  is_confirmed boolean
 );
 -- CREATE TABLE budgets
 -- (
