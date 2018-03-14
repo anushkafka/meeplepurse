@@ -16,9 +16,18 @@
     <div class="item">
       Meeple Purse
     </div>
+    
     <a href="/purse" class="item">Purse</a>
     <a href="/add" class="item">Add Games</a>
-    <a href="/purse" class="item"><%=session[:user_id]%></a>
+    
+    <% if session[:user_id] != nil %>
+      <%# usr = User.find(session[:user_id])%>
+      <a href="/purse" class="item">Sign out</a>
+    <% else %>
+
+    <% end %>
+    
+    
   </div>
 
   <div class="container">

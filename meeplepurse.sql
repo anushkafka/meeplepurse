@@ -20,14 +20,18 @@ CREATE TABLE purchases(
   price NUMERIC CHECK(price > 0),
   is_confirmed boolean
 );
--- CREATE TABLE budgets
--- (
---   id serial PRIMARY KEY,
---   user_id INTEGER REFERENCES users (id) ON DELETE RESTRICT,
---   fiscal_year VARCHAR(4),
---   currency VARCHAR(3),
---   est_budget NUMERIC CHECK (est_budget > 0)
--- );
+
+CREATE TABLE budgets
+(
+  id serial PRIMARY KEY,
+  user_id INTEGER REFERENCES users (id) ON DELETE RESTRICT,
+  year VARCHAR(4),
+  duration INTEGER,
+  currency VARCHAR(3),
+  est_budget NUMERIC CHECK (est_budget > 0),
+  act_budget NUMERIC,
+  created_date date
+);
 
 -- CREATE TABLE boardgames
 -- (

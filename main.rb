@@ -101,10 +101,6 @@ end
 #   end
 # end
 
-
-
-
-
 get '/add' do
   @boardgames = []
   if params[:game_name]
@@ -139,30 +135,30 @@ post '/add/:id' do
   end
 end
 
-get '/add_1' do
-  @boardgames = []
-  if params[:game_name]
-    game_name = URI.encode_www_form_component(params[:game_name].downcase)
-    game_name_search_url = "https://www.boardgamegeek.com/xmlapi/search?search=#{game_name}"
+# get '/add_1' do
+#   @boardgames = []
+#   if params[:game_name]
+#     game_name = URI.encode_www_form_component(params[:game_name].downcase)
+#     game_name_search_url = "https://www.boardgamegeek.com/xmlapi/search?search=#{game_name}"
 
-    game_name_search_results = HTTParty.get(game_name_search_url)
+#     game_name_search_results = HTTParty.get(game_name_search_url)
 
   
-    game_name_search_results.parsed_response["boardgames"]["boardgame"].each do |boardgame|
-      game_id = boardgame["objectid"]
-      url_2 = "https://www.boardgamegeek.com/xmlapi2/thing?id=#{game_id}"
-      res_2 = HTTParty.get(url_2)
-      boardgame = {
-        :id => boardgame["objectid"],
-        :name => res_2.parsed_response["items"]["item"]["name"]["value"],
-        :thumbnail => res_2.parsed_response["items"]["item"]["thumbnail"],
-        :img_url => res_2.parsed_response["items"]["item"]["image"],
-        :year => res_2.parsed_response["items"]["item"]["yearpublished"]["value"],
-        :desc => res_2.parsed_response["items"]["item"]["description"]
-      }
-      @boardgames << boardgame
-    end
-  end
-  erb :add
-end
+#     game_name_search_results.parsed_response["boardgames"]["boardgame"].each do |boardgame|
+#       game_id = boardgame["objectid"]
+#       url_2 = "https://www.boardgamegeek.com/xmlapi2/thing?id=#{game_id}"
+#       res_2 = HTTParty.get(url_2)
+#       boardgame = {
+#         :id => boardgame["objectid"],
+#         :name => res_2.parsed_response["items"]["item"]["name"]["value"],
+#         :thumbnail => res_2.parsed_response["items"]["item"]["thumbnail"],
+#         :img_url => res_2.parsed_response["items"]["item"]["image"],
+#         :year => res_2.parsed_response["items"]["item"]["yearpublished"]["value"],
+#         :desc => res_2.parsed_response["items"]["item"]["description"]
+#       }
+#       @boardgames << boardgame
+#     end
+#   end
+#   erb :add
+# end
 
